@@ -15,6 +15,15 @@ class App extends Component {
 
   buttonClickHandler() {
     this.setState({ renderBall: true });
+    document.addEventListener("keydown", (event) => {
+      let copyobj = { ...this.state.ballPosition };
+      if (event.keyCode === 39) {
+        this.setState({ posi: this.state.posi + 5 });
+      }
+      copyobj.left = this.state.posi + "px";
+      this.setState({ ballPosition: copyobj });
+      console.log(this.state);
+    });
   }
   renderBallOrButton() {
     if (this.state.renderBall) {
@@ -27,16 +36,7 @@ class App extends Component {
   }
 
   // bind ArrowRight keydown event
-  componentDidMount() {
-    document.addEventListener("keydown", (event) => {
-      let copyobj = { ...this.state.ballPosition };
-      if (event.keyCode === 39) {
-        this.setState({ posi: this.state.posi + 5 });
-      }
-      copyobj.left = this.state.posi + "px";
-      this.setState({ ballPosition: copyobj });
-    });
-  }
+  componentDidMount() {}
 
   render() {
     return <div className="playground">{this.renderBallOrButton()}</div>;
