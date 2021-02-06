@@ -27,7 +27,7 @@ function App() {
         console.log(posi, "  ", ballPosition.left);
       }
     });
-  });
+  },[]);
   return <div className="playground">{renderBallOrButton()}</div>;
 }
 
