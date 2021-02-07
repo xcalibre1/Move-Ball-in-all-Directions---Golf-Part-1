@@ -1,64 +1,36 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState ,useEffect} from "react";
 import '../styles/App.css';
+function App() {
+  const [renderBall, setRenderBall] = useState(false);
+  const [posi, setposi] = useState(0);
+  const [ballPosition, setBallPosition] = useState({ left: "0px" });
+  const myStateRef = React.useRef(posi);
+  const setMyState = (data) => {
+    myStateRef.current = data;
+    setposi(data);
+  };
 
-
-class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            renderBall: false,
-            posi : 0,
-            ballPosition: {left: "0px" }
-        };
-        this.renderChoice = this.renderBallOrButton.bind(this)
-        this.buttonClickHandler = this.buttonClickHandler.bind(this)
-    };
-
-    buttonClickHandler() {
-      this.setState({
-		    renderBall:true
-	    })
-      
-      
-	    document.addEventListener("keydown",(event)=>{
-        if(event.keyCode===39){
-			    this.setState({
-            posi:this.state.posi+5,
-            
-			    })
-        }
-        let obj={}
-        obj.left=this.state.posi + 'px';
-        this.setState({
-          ballPosition:obj,
-        })
-        
-      })
-      
-	    
-   
-   }
-    renderBallOrButton() {
-		if (this.state.renderBall) {
-		    return <div className="ball" style={this.state.ballPosition}></div>
-		} else {
-		    return <button onClick={this.buttonClickHandler} className='start'>Click For One Ball</button>
-		}
+  const buttonClickHandler = () => {
+    setRenderBall(true);
+  };
+  const renderBallOrButton = () => {
+    if (renderBall) {
+      return <div className="ball" style={ballPosition}></div>;
+    } else {
+      return <button onClick={buttonClickHandler}>Click For One Ball</button>;
     }
-
-    // bind ArrowRight keydown event
-    componentDidMount() {
-	    
-    }
-
-    render() {
-        return (
-            <div className="playground">
-                {this.renderBallOrButton() }
-            </div>
-        )
-    }
+  };
+  // bind ArrowRight keydown event
+  useEffect(() => {
+    document.addEventListener("keydown", (event) => {
+      if (event.keyCode == 39) {
+        setMyState(myStateRef.current + 5);
+        setBallPosition({ left: myStateRef.current + "px" });
+      }
+    });
+  }, []);
+  return <div className="playground">{renderBallOrButton()}</div>;
 }
 
-
 export default App;
+
